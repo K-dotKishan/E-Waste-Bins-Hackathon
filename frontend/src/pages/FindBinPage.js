@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { MapPin, Navigation, Clock, Battery, Phone, Laptop, Cable, Plug, Headphones, Monitor, Printer, Tablet } from 'lucide-react';
 import './FindBinPage.css';
+import { API_BASE_URL } from '../utils/config';
 
 const FindBinPage = () => {
   const [selectedWasteType, setSelectedWasteType] = useState('');
@@ -55,10 +56,14 @@ const FindBinPage = () => {
     }
   };
 
+
+
+  // ... (inside component)
+
   const fetchBins = async () => {
     setLoading(true);
     try {
-      const response = await fetch('/api/bins');
+      const response = await fetch(`${API_BASE_URL}/api/bins`);
       const data = await response.json();
       setBins(data);
       setFilteredBins(data);
@@ -71,7 +76,7 @@ const FindBinPage = () => {
   const filterBinsByType = async (wasteType) => {
     setLoading(true);
     try {
-      const response = await fetch(`/api/bins/by-type/${wasteType}`);
+      const response = await fetch(`${API_BASE_URL}/api/bins/by-type/${wasteType}`);
       const data = await response.json();
       setFilteredBins(data);
     } catch (error) {
@@ -82,17 +87,17 @@ const FindBinPage = () => {
 
   const calculateDistance = (binLat, binLng) => {
     if (!userLocation) return 0;
-    
+
     const R = 6371; // Earth's radius in km
     const dLat = (binLat - userLocation.lat) * Math.PI / 180;
     const dLon = (binLng - userLocation.lng) * Math.PI / 180;
-    const a = 
-      Math.sin(dLat/2) * Math.sin(dLat/2) +
+    const a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
       Math.cos(userLocation.lat * Math.PI / 180) * Math.cos(binLat * Math.PI / 180) *
-      Math.sin(dLon/2) * Math.sin(dLon/2);
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+      Math.sin(dLon / 2) * Math.sin(dLon / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     const distance = R * c;
-    
+
     return distance.toFixed(1);
   };
 
@@ -134,7 +139,7 @@ const FindBinPage = () => {
             })}
           </div>
           {selectedWasteType && (
-            <button 
+            <button
               className="clear-filter"
               onClick={() => setSelectedWasteType('')}
             >
@@ -179,8 +184,8 @@ const FindBinPage = () => {
               </div>
             ) : (
               filteredBins.map((bin, index) => (
-                <div 
-                  key={bin.id} 
+                <div
+                  key={bin.id}
                   className="bin-card card animate-slide-in"
                   style={{ animationDelay: `${index * 0.1}s` }}
                 >
@@ -199,9 +204,9 @@ const FindBinPage = () => {
 
                   <div className="bin-status">
                     <div className="status-item">
-                      <div 
+                      <div
                         className="fill-indicator"
-                        style={{ 
+                        style={{
                           background: `linear-gradient(90deg, ${getBinStatusColor(bin.fillLevel)} ${bin.fillLevel}%, rgba(255,255,255,0.1) ${bin.fillLevel}%)`
                         }}
                       >
@@ -228,7 +233,7 @@ const FindBinPage = () => {
                     </div>
                   </div>
 
-                  <button 
+                  <button
                     className="btn btn-primary"
                     onClick={() => getDirections(bin)}
                   >

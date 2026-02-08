@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 import { MapPin, TrendingUp, AlertCircle, CheckCircle, Package, Leaf, Users, DollarSign } from 'lucide-react';
 import './AdminDashboard.css';
+import { API_BASE_URL } from '../utils/config';
 
 const AdminDashboard = () => {
   const [analytics, setAnalytics] = useState(null);
@@ -13,9 +14,13 @@ const AdminDashboard = () => {
     fetchBins();
   }, []);
 
+
+
+  // ... (inside component)
+
   const fetchAnalytics = async () => {
     try {
-      const response = await fetch('/api/analytics');
+      const response = await fetch(`${API_BASE_URL}/api/analytics`);
       const data = await response.json();
       setAnalytics(data);
     } catch (error) {
@@ -26,7 +31,7 @@ const AdminDashboard = () => {
 
   const fetchBins = async () => {
     try {
-      const response = await fetch('/api/bins');
+      const response = await fetch(`${API_BASE_URL}/api/bins`);
       const data = await response.json();
       setBins(data);
     } catch (error) {
@@ -135,9 +140,9 @@ const AdminDashboard = () => {
                 <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
                 <XAxis dataKey="name" stroke="var(--text-secondary)" />
                 <YAxis stroke="var(--text-secondary)" />
-                <Tooltip 
-                  contentStyle={{ 
-                    background: 'var(--bg-card)', 
+                <Tooltip
+                  contentStyle={{
+                    background: 'var(--bg-card)',
                     border: '1px solid var(--border)',
                     borderRadius: '12px'
                   }}
@@ -168,9 +173,9 @@ const AdminDashboard = () => {
                     <Cell key={`cell-${index}`} fill={entry.color} />
                   ))}
                 </Pie>
-                <Tooltip 
-                  contentStyle={{ 
-                    background: 'var(--bg-card)', 
+                <Tooltip
+                  contentStyle={{
+                    background: 'var(--bg-card)',
                     border: '1px solid var(--border)',
                     borderRadius: '12px'
                   }}
@@ -208,9 +213,9 @@ const AdminDashboard = () => {
                 <div className="col-location">{bin.address}</div>
                 <div className="col-fill">
                   <div className="fill-bar">
-                    <div 
+                    <div
                       className="fill-progress"
-                      style={{ 
+                      style={{
                         width: `${bin.fillLevel}%`,
                         background: getBinStatusColor(bin.fillLevel)
                       }}
@@ -264,7 +269,7 @@ const AdminDashboard = () => {
                   </div>
                 </div>
                 <div className="bin-fill-visual">
-                  <div 
+                  <div
                     className="fill-bar-large"
                     style={{
                       background: `linear-gradient(90deg, ${getBinStatusColor(bin.fillLevel)} ${bin.fillLevel}%, rgba(255,255,255,0.1) ${bin.fillLevel}%)`

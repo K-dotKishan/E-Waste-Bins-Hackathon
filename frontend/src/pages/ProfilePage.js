@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Award, TrendingUp, Leaf, Target, Star, Gift } from 'lucide-react';
 import './ProfilePage.css';
+import { API_BASE_URL } from '../utils/config';
 
 const ProfilePage = () => {
   const [user, setUser] = useState(null);
@@ -12,9 +13,13 @@ const ProfilePage = () => {
     fetchTransactions();
   }, []);
 
+
+
+  // ... (inside component)
+
   const fetchUserData = async () => {
     try {
-      const response = await fetch('/api/users/1');
+      const response = await fetch(`${API_BASE_URL}/api/users/1`);
       const data = await response.json();
       setUser(data);
     } catch (error) {
@@ -25,7 +30,7 @@ const ProfilePage = () => {
 
   const fetchTransactions = async () => {
     try {
-      const response = await fetch('/api/users/1/transactions');
+      const response = await fetch(`${API_BASE_URL}/api/users/1/transactions`);
       const data = await response.json();
       setTransactions(data);
     } catch (error) {
@@ -107,7 +112,7 @@ const ProfilePage = () => {
           <h2>Achievements</h2>
           <div className="achievements-grid">
             {achievements.map((achievement) => (
-              <div 
+              <div
                 key={achievement.id}
                 className={`achievement-card card ${achievement.unlocked ? 'unlocked' : 'locked'}`}
               >
@@ -131,7 +136,7 @@ const ProfilePage = () => {
               {user.points.toLocaleString()} points available
             </div>
           </div>
-          
+
           <div className="rewards-grid">
             <div className="reward-card card">
               <div className="reward-icon">

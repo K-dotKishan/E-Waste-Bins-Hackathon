@@ -3,6 +3,7 @@ import { Camera, Upload, Zap, Award, Leaf, CheckCircle, AlertCircle } from 'luci
 import * as tf from '@tensorflow/tfjs';
 import * as mobilenet from '@tensorflow-models/mobilenet';
 import './DetectionPage.css';
+import { API_BASE_URL } from '../utils/config';
 
 const DetectionPage = () => {
   const [step, setStep] = useState('input'); // input, detecting, result
@@ -107,7 +108,11 @@ const DetectionPage = () => {
       const imageBlob = await imageResponse.blob();
       formData.append('image', imageBlob, 'upload.jpg');
 
-      const response = await fetch('http://localhost:5000/api/detect', { // Ensure absolute URL if proxy isn't set up, or relative if it is. Assuming relative based on existing code.
+
+
+      // ... (in handleDetect)
+
+      const response = await fetch(`${API_BASE_URL}/api/detect`, {
         method: 'POST',
         body: formData
       });
@@ -129,7 +134,7 @@ const DetectionPage = () => {
     }
 
     try {
-      const response = await fetch('http://localhost:5000/api/transactions', {
+      const response = await fetch(`${API_BASE_URL}/api/transactions`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
