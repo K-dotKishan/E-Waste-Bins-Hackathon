@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Camera, Upload, Zap, Award, Leaf, CheckCircle, AlertCircle } from 'lucide-react';
-import * as tf from '@tensorflow/tfjs';
+import { Camera, Zap, Award, Leaf, CheckCircle, AlertCircle } from 'lucide-react';
 import * as mobilenet from '@tensorflow-models/mobilenet';
 import './DetectionPage.css';
 import { API_BASE_URL } from '../utils/config';
